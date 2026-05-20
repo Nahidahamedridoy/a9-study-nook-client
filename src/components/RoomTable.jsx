@@ -1,5 +1,6 @@
 import { Button, Table } from "@heroui/react";
 import { DeleteModal } from "./DeleteModal";
+import Link from "next/link";
 
 export function RoomTable({ roomData }) {
   console.log(roomData);
@@ -10,8 +11,7 @@ export function RoomTable({ roomData }) {
           <Table.Header>
             <Table.Column isRowHeader>Room Name</Table.Column>
             <Table.Column>Price</Table.Column>
-            <Table.Column>Stock</Table.Column>
-            <Table.Column>Email</Table.Column>
+            <Table.Column>Capacity</Table.Column>
             <Table.Column>Action</Table.Column>
           </Table.Header>
           <Table.Body>
@@ -21,11 +21,14 @@ export function RoomTable({ roomData }) {
                 <Table.Cell>{data.roomName}</Table.Cell>
                 <Table.Cell>$ {data.hourlyRate}</Table.Cell>
                 <Table.Cell>{data.capacity}</Table.Cell>
-                <Table.Cell>{data.ownerEmail}</Table.Cell>
                 <Table.Cell>
-                  <Button className={'mr-4'}>
-                    Edit
-                  </Button>
+
+                  <Link href={`/rooms/${data._id}/edit`}>
+                    <Button className={'mr-4'}>
+                      Edit
+                    </Button>
+                  </Link>
+
                   <DeleteModal
                     detailId={data._id}
                   />

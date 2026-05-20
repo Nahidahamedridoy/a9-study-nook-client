@@ -44,3 +44,8 @@ export const deleteRoom = async (id) => {
 
         return data;
 }
+
+const updateDetails = async (id , formData) =>{
+    console.log(id);
+    const updateDetails = Object.fromEntries(formData.entries());
+}
