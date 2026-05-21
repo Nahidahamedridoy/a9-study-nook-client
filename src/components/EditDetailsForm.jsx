@@ -1,12 +1,18 @@
 "use client";
+import { updateDetails } from "@/lib/details/action";
 import { Button, FieldError, Form, Input, Label, TextField } from "@heroui/react";
 import { useRouter } from "next/navigation";
 
 const EditDetailsForm = ({ details }) => {
-    const { roomName, description, image, capacity, hourlyRate } = details;
+    const {_id, roomName, description, image, capacity, hourlyRate } = details;
     const router = useRouter();
-    const handleSubmit = async (formData) => {
 
+    const handleSubmit = async (formData) => {
+        const data = await updateDetails(_id , formData);
+        // console.log(data);
+        if(data.modifiedCount > 0){
+            router.push("/rooms");
+        }
 
     }
     return (
@@ -14,16 +20,6 @@ const EditDetailsForm = ({ details }) => {
             <Form
                 action={handleSubmit}
                 className="flex w-96 flex-col gap-4 border p-5 rounded-md" >
-                {/* name */}
-                <TextField
-
-                    name="email"
-                    type="email"
-                >
-                    <Label>Owner Email</Label>
-                    <Input placeholder="Enter Room Name" />
-                    <FieldError />
-                </TextField>
 
                 {/* name */}
                 <TextField

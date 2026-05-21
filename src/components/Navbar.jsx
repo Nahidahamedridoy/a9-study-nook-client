@@ -12,9 +12,9 @@ export default function Navbar() {
 
   const links = [
     { name: "Home", path: "/" },
-    { name: "All Rooms", path: "/rooms" },
+    { name: "My Listings", path: "/rooms" },
     { name: "Add Room", path: "/add-room" },
-    { name: "My Listings", path: "/my-listings" },
+    { name: "All Rooms", path: "/my-listings" },
     { name: "My Bookings", path: "/my-bookings" },
   ];
 
