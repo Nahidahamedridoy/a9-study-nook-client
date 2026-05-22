@@ -3,13 +3,13 @@
 import { useState } from 'react';
 import { Button } from '@heroui/react';
 import { authClient } from '@/lib/auth-client';
+import toast from 'react-hot-toast';
 
 export default function BookingModal({
   roomId,
   roomName,
   hourlyRate,
   image,
-  availableTimeSlots = [],
 }) {
 
   const userData = authClient.useSession();
@@ -17,30 +17,38 @@ export default function BookingModal({
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
-  const [selectedTime, setSelectedTime] = useState('');
-
-  const timeSlots =
-    availableTimeSlots.length > 0
-      ? availableTimeSlots
-      : [
-        '09:00',
-        '10:00',
-        '11:00',
-        '12:00',
-        '13:00',
-        '14:00',
-        '15:00',
-        '16:00',
-        '17:00',
-        '18:00',
-      ];
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [note, setNote] = useState('');
 
   const today = new Date().toISOString().split('T')[0];
 
+  // 🕒 generate time slots
+  const timeSlots = [
+    '08:00', '09:00', '10:00', '11:00',
+    '12:00', '13:00', '14:00', '15:00',
+    '16:00', '17:00', '18:00', '19:00', '20:00'
+  ];
+
+  // ⏱️ convert time to hour number
+  const getHour = (time) => Number(time.split(':')[0]);
+
+  // 💰 calculate cost
+  const totalCost =
+    startTime && endTime
+      ? (getHour(endTime) - getHour(startTime)) * hourlyRate
+      : hourlyRate;
+
+  // 🚨 end time filter
+  const filteredEndTimes =
+    startTime
+      ? timeSlots.filter(t => getHour(t) > getHour(startTime))
+      : [];
+
   const handleBooking = async () => {
 
-    if (!selectedDate || !selectedTime) {
-      alert('তারিখ এবং সময় সিলেক্ট করুন');
+    if (!selectedDate || !startTime || !endTime) {
+      alert('তারিখ, start time এবং end time সিলেক্ট করুন');
       return;
     }
 
@@ -51,45 +59,50 @@ export default function BookingModal({
         roomName,
         roomImage: image,
 
-        userId:user?.id,
-        userImage:user?.image,
-        userName:user?.name,
-        userEmail:user?.email,
+        userId: user?.id,
+        userImage: user?.image,
+        userName: user?.name,
+        userEmail: user?.email,
 
         bookingDate: selectedDate,
-        bookingTime: selectedTime,
+        startTime,
+        endTime,
 
         hourlyRate,
+        totalCost,
 
+        note,
         createdAt: new Date(),
       };
 
-      console.log(bookingData);
+      const response = await fetch('http://localhost:5000/booking', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookingData),
+      });
 
-     const res =await fetch('http://localhost:5000/booking' , {
-      method: "POST",
-      headers:{
-        'content-type' : 'application/json'
-      },
-      body:JSON.stringify(bookingData)
-     })
+      const data = await response.json();
 
-     const data = await res.json();
-     console.log(data);
+      // ❌ conflict or error
+      if (!response.ok || !data.success) {
+        alert(data.message || 'Booking Failed');
+        return;
+      }
 
-
-      alert(
-        `✅ Booking Successful!\nDate: ${selectedDate}\nTime: ${selectedTime}`
-      );
+      // ✅ success
+      alert("Room booked successfully!");
 
       setIsOpen(false);
       setSelectedDate('');
-      setSelectedTime('');
+      setStartTime('');
+      setEndTime('');
+      setNote('');
 
     } catch (error) {
-
       console.log(error);
-      alert('❌ Booking Failed');
+      alert('Booking Failed');
     }
   };
 
@@ -97,7 +110,7 @@ export default function BookingModal({
     <>
       <Button
         onClick={() => setIsOpen(true)}
-        className="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-6 text-lg rounded-2xl shadow-lg"
+        className="w-full bg-amber-500 hover:bg-amber-600 text-white py-6 rounded-2xl"
       >
         Book Now - ${hourlyRate}/hr
       </Button>
@@ -105,107 +118,91 @@ export default function BookingModal({
       {isOpen && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
 
-          <div className="bg-zinc-900 w-full max-w-md rounded-3xl overflow-hidden border border-zinc-700">
+          <div className="bg-zinc-900 w-full max-w-md rounded-3xl border border-zinc-700">
 
             {/* Header */}
-            <div className="p-6 border-b border-zinc-700">
+            <div className="p-6 border-b border-zinc-700 flex justify-between items-center">
 
-              <div className="flex justify-between items-center">
+              <h2 className="text-xl font-bold text-white">
+                Book {roomName}
+              </h2>
 
-                <h2 className="text-2xl font-bold text-white">
-                  Book {roomName}
-                </h2>
-
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="text-3xl text-zinc-400 hover:text-white leading-none"
-                >
-                  ×
-                </button>
-
-              </div>
-
-              <p className="text-zinc-400 text-sm mt-2">
-                Pick a date and time slot
-              </p>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-zinc-400 hover:text-white text-3xl leading-none transition"
+                aria-label="Close modal"
+              >
+                ×
+              </button>
 
             </div>
 
             {/* Body */}
-            <div className="p-6 space-y-6">
+            <div className="p-6 space-y-4">
 
-              <div>
+              {/* Date */}
+              <input
+                type="date"
+                min={today}
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="w-full p-3 bg-zinc-800 text-white rounded-xl"
+              />
 
-                <label className="block text-sm text-zinc-400 mb-2">
-                  Select Date
-                </label>
+              {/* Start Time */}
+              <select
+                value={startTime}
+                onChange={(e) => {
+                  setStartTime(e.target.value);
+                  setEndTime('');
+                }}
+                className="w-full p-3 bg-zinc-800 text-white rounded-xl"
+              >
+                <option value="">Select Start Time</option>
+                {timeSlots.map(t => (
+                  <option key={t} value={t}>{t}</option>
+                ))}
+              </select>
 
-                <input
-                  type="date"
-                  min={today}
-                  value={selectedDate}
-                  onChange={(e) => setSelectedDate(e.target.value)}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500"
-                />
+              {/* End Time */}
+              <select
+                value={endTime}
+                onChange={(e) => setEndTime(e.target.value)}
+                className="w-full p-3 bg-zinc-800 text-white rounded-xl"
+              >
+                <option value="">Select End Time</option>
+                {filteredEndTimes.map(t => (
+                  <option key={t} value={t}>{t}</option>
+                ))}
+              </select>
 
-              </div>
+              {/* Note */}
+              <textarea
+                placeholder="Special note (optional)"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                className="w-full p-3 bg-zinc-800 text-white rounded-xl"
+              />
 
-              <div>
-
-                <label className="block text-sm text-zinc-400 mb-3">
-                  Available Time Slots
-                </label>
-
-                <div className="grid grid-cols-4 gap-2">
-
-                  {timeSlots.map((time) => (
-                    <button
-                      key={time}
-                      onClick={() => setSelectedTime(time)}
-                      className={`py-3 text-sm font-medium rounded-xl transition-all border ${selectedTime === time
-                          ? 'bg-cyan-500 text-white border-cyan-500'
-                          : 'bg-zinc-800 hover:bg-zinc-700 border-zinc-700 text-zinc-300'
-                        }`}
-                    >
-                      {time}
-                    </button>
-                  ))}
-
-                </div>
-
-              </div>
-
-              <div className="bg-zinc-800 rounded-2xl p-5 flex justify-between items-center">
-
-                <div>
-                  <p className="text-zinc-400 text-sm">
-                    Total (1 Hour)
-                  </p>
-
-                  <p className="text-3xl font-bold text-white">
-                    ${hourlyRate}
-                  </p>
-                </div>
-
-                <div className="text-emerald-400 font-medium">
-                  ✓ Available
-                </div>
-
+              {/* Total cost */}
+              <div className="bg-zinc-800 p-4 rounded-xl flex justify-between">
+                <p className="text-white">Total Cost</p>
+                <p className="text-emerald-400 font-bold">
+                  ${totalCost || 0}
+                </p>
               </div>
 
             </div>
 
             {/* Footer */}
             <div className="p-6 border-t border-zinc-700">
-
               <Button
                 onClick={handleBooking}
-                disabled={!selectedDate || !selectedTime}
-                className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:bg-zinc-700 disabled:text-zinc-500 py-6 text-lg font-semibold rounded-2xl"
+                disabled={!selectedDate || !startTime || !endTime}
+                className="w-full bg-emerald-600 py-5 rounded-xl"
               >
                 Confirm Booking
               </Button>
-
             </div>
 
           </div>

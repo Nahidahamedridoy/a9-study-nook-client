@@ -1,8 +1,7 @@
+import { DeleteBookingRoom } from "@/components/DeleteBookingRoom";
 import { auth } from "@/lib/auth";
-import { Button } from "@heroui/react";
 import { headers } from "next/headers";
 import Image from "next/image";
-import { IoTrashBin } from "react-icons/io5";
 
 const MyBookingPage = async () => {
 
@@ -47,7 +46,8 @@ const MyBookingPage = async () => {
 
                             <p className="text-3xl font-bold">${booking.hourlyRate}</p>
 
-                        <Button className={'rounded-none border-red-500 text-red-500'} variant="outline"><IoTrashBin/> Cancel</Button>
+                        <DeleteBookingRoom bookingId = {booking._id}/>
+
                         </div>
 
 

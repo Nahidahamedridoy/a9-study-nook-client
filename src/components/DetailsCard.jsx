@@ -15,8 +15,8 @@ export function DetailsCard({ details }) {
     } = details;
 
     return (
-        <div className="bg-gradient-to-br from-white via-cyan-50 to-cyan-100 rounded-2xl overflow-hidden shadow-xl hover:-translate-y-2 hover:shadow-cyan-400/30 transition-all duration-300 border border-cyan-200 flex flex-col">
 
+        <div className="bg-gradient-to-br from-white via-cyan-50 to-cyan-100 rounded-2xl overflow-hidden shadow-xl hover:-translate-y-2 hover:shadow-cyan-400/30 transition-all duration-300 border border-cyan-200 flex flex-col">
             {/* Image */}
             <div className="relative w-full h-64">
                 <Image
