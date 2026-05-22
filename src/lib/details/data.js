@@ -9,3 +9,15 @@ export const getDetailsById = async (id) => {
     const data = await res.json();
     return data;
 }
+
+export const getLatestDetails = async () => {
+  const res = await fetch("http://localhost:5000/details?limit=6", {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch latest details");
+  }
+
+  return res.json();
+};

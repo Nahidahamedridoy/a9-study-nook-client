@@ -1,3 +1,4 @@
+import BookingModal from '@/components/BookingModal';
 import { getDetailsById } from '@/lib/details/data';
 import { Button, Card } from '@heroui/react';
 import Image from 'next/image';
@@ -123,10 +124,15 @@ const RoomDetails = async ({ params }) => {
                             </div>
                         </div>
 
-                        {/* Button */}
-                        <Button className="w-full h-14 rounded-2xl bg-cyan-500 text-white text-lg font-bold hover:bg-cyan-400 transition duration-300 shadow-xl shadow-cyan-300/40">
-                            Book Now
-                        </Button>
+
+
+                        <BookingModal
+                            roomId={id}
+                            roomName={roomName}
+                            hourlyRate={hourlyRate}
+                            image={image}
+                            
+                        />
 
                     </div>
                 </div>

@@ -1,8 +1,8 @@
-import { getAllDetails } from "@/lib/details/data";
+import {getLatestDetails } from "@/lib/details/data";
 import { DetailsCard } from "./DetailsCard";
 
-const CommonRoom = async () => {
-  const detailsData = await getAllDetails();
+const AllRoomDetails = async () => {
+  const detailsData = await getLatestDetails();
 
   return (
     <div>
@@ -17,4 +17,4 @@ const CommonRoom = async () => {
   );
 };
 
-export default CommonRoom;
+export default AllRoomDetails;
