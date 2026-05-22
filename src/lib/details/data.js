@@ -1,13 +1,27 @@
+import { headers } from "next/headers";
+import { auth } from "../auth";
+
 export const getAllDetails = async () => {
-    const res = fetch("http://localhost:5000/details");
-    const data = (await res).json();
-    return data;
+  const res = fetch("http://localhost:5000/details");
+  const data = (await res).json();
+  return data;
 };
 
 export const getDetailsById = async (id) => {
-    const res = await fetch(`http://localhost:5000/details/${id}`);
-    const data = await res.json();
-    return data;
+
+  const {token} =await auth.api.getToken({
+    headers : await headers()
+  })
+
+  console.log(token);
+
+  const res = await fetch(`http://localhost:5000/details/${id}`, {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  });
+  const data = await res.json();
+  return data;
 }
 
 export const getLatestDetails = async () => {

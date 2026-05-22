@@ -2,32 +2,35 @@
 
 import { revalidatePath } from "next/cache";
 
-export const addDetails = async (formData) => {
-    const newDetails = Object.fromEntries(formData.entries());
-
+export const addDetails = async (data) => {
     const modifiedData = {
-        roomName: newDetails.roomName,
-        hourlyRate: parseInt(newDetails.hourlyRate),
-        capacity: parseInt(newDetails.capacity),
-        description: newDetails.description,
-        image: newDetails.image,
+        roomName: data.roomName,
+        description: data.description,
+        image: data.image,
+        floor: data.floor,
+        capacity: Number(data.capacity),
+        hourlyRate: Number(data.hourlyRate),
+        amenities: data.amenities || [],
+        email: data.email,
     };
-    // console.log(newDetails);
-    const res = fetch("http://localhost:5000/details", {
+
+    const res = await fetch("http://localhost:5000/details", {
         method: "POST",
         headers: {
-            "content-type": "application/json"
+            "Content-Type": "application/json",
         },
         body: JSON.stringify(modifiedData),
     });
-    const data = (await res).json();
-    // console.log(data);
+
+    const result = await res.json();
 
     if (!res.ok) {
-        return
+        throw new Error(result.message || "Failed to add rooms");
     }
-    revalidatePath("/details")
-    return data;
+
+    revalidatePath("/rooms");
+
+    return result;
 };
 
 export const deleteRoom = async (id) => {

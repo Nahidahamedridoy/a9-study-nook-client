@@ -21,7 +21,7 @@ const SignUpPage = () => {
         })
 
         if(data){
-            redirect('/')
+            redirect('/login')
         }
 
         if(error){
