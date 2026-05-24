@@ -69,7 +69,7 @@ const Footer = () => {
                         <div className="space-y-3 text-gray-600">
 
                             <p>
-                                📧 support@studynook.com
+                                📧 nahidahamedridoy@gmail.com
                             </p>
 
                             <p>

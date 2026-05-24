@@ -25,13 +25,40 @@ const Navbar = () => {
 
   const pathname = usePathname();
 
-  const links = [
-    { name: "Home", path: "/" },
-    { name: "All Rooms", path: "/rooms" },
-    { name: "Add Room", path: "/add-room" },
-    { name: "My Listings", path: "/my-listing" },
-    { name: "My Bookings", path: "/my-bookings" },
-  ];
+ const links = [
+  // public links
+  { name: "Home", path: "/" },
+  { name: "All Rooms", path: "/rooms" },
+
+  // private links
+  { name: "Add Room", path: "/add-room", private: true },
+  { name: "My Listings", path: "/my-listing", private: true },
+  { name: "My Bookings", path: "/my-bookings", private: true },
+
+];
+
+{
+  links.map((link) => {
+
+    if (link.private && !user) {
+      return null;
+    }
+
+    if (link && user) {
+      return null;
+    }
+
+    return (
+      <Link
+        key={link.path}
+        href={link.path}
+        className="hover:text-cyan-500 transition"
+      >
+        {link.name}
+      </Link>
+    );
+  });
+}
 
   return (
     <nav className="sticky top-0 z-50 bg-[#0F172A]/90 backdrop-blur-xl border-b border-white/10">

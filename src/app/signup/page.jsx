@@ -22,11 +22,12 @@ const SignUpPage = () => {
         })
 
         if(data){
+            toast.success("registration Successful")
             redirect('/login')
         }
 
         if(error){
-            // toast
+            
             toast.error("error")
         }
         // console.log({ data, error });
