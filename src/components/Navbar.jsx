@@ -25,40 +25,19 @@ const Navbar = () => {
 
   const pathname = usePathname();
 
- const links = [
-  // public links
-  { name: "Home", path: "/" },
-  { name: "All Rooms", path: "/rooms" },
+  const links = [
+    // public links
+    { name: "Home", path: "/" },
+    { name: "All Rooms", path: "/rooms" },
 
-  // private links
-  { name: "Add Room", path: "/add-room", private: true },
-  { name: "My Listings", path: "/my-listing", private: true },
-  { name: "My Bookings", path: "/my-bookings", private: true },
+    // private links
+  ];
 
-];
-
-{
-  links.map((link) => {
-
-    if (link.private && !user) {
-      return null;
-    }
-
-    if (link && user) {
-      return null;
-    }
-
-    return (
-      <Link
-        key={link.path}
-        href={link.path}
-        className="hover:text-cyan-500 transition"
-      >
-        {link.name}
-      </Link>
-    );
-  });
-}
+  const privateLinks = [
+    { name: "Add Room", path: "/add-room", private: true },
+    { name: "My Listings", path: "/my-listing", private: true },
+    { name: "My Bookings", path: "/my-bookings", private: true },
+  ]
 
   return (
     <nav className="sticky top-0 z-50 bg-[#0F172A]/90 backdrop-blur-xl border-b border-white/10">
@@ -82,13 +61,13 @@ const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center gap-4">
-
-            {
-              links.map((link) => {
+          {
+            links.map((link) => {
 
                 const isActive = pathname === link.path;
 
                 return (
+
                   <Link
                     key={link.name}
                     href={link.path}
@@ -100,6 +79,26 @@ const Navbar = () => {
                     {link.name}
                   </Link>
                 );
+              })
+          }
+            {
+           user && privateLinks.map((link) => {
+                  console.log(user);
+                const isActive = pathname === link.path;
+
+                return  (
+
+                  <Link
+                    key={link.name}
+                    href={link.path}
+                    className={`px-5 py-2 rounded-xl font-medium transition-all duration-300 ${isActive
+                      ? "bg-sky-400 text-black shadow-lg shadow-sky-500/30"
+                      : "text-gray-300 hover:text-sky-400 hover:bg-white/5"
+                      }`}
+                  >
+                    {link.name}
+                  </Link>
+                ) 
               })
             }
 
