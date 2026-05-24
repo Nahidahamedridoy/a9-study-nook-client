@@ -1,5 +1,6 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import { addDetails } from "@/lib/details/action";
 import {
   Button,
@@ -22,6 +23,9 @@ const amenitiesList = [
   "Air Conditioning",
 ];
 
+const {data:tokenData} = await authClient.token()
+console.log(tokenData);
+
 const AddDetailsForm = () => {
   const router = useRouter();
   const [selectedAmenities, setSelectedAmenities] = useState([]);
@@ -35,7 +39,7 @@ const AddDetailsForm = () => {
     const data = await addDetails(dataObj);
 
     if (data) {
-      router.push("/details");
+      router.push("/rooms");
     }
   };
 

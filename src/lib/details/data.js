@@ -25,6 +25,7 @@ export const getDetailsById = async (id) => {
 }
 
 export const getLatestDetails = async () => {
+
   const res = await fetch("http://localhost:5000/details?limit=6", {
     cache: "no-store",
   });

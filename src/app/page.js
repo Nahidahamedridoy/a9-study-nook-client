@@ -1,6 +1,7 @@
 import AllRoomDetails from "@/components/AllRoomDetails";
 import Banner from "@/components/Banner";
-import CommonRoom from "@/components/CommonRoom";
+import HowStudyNookWorks from "@/components/HowStudyNookWorks";
+import WhyChooseStudyNook from "@/components/WhyChooseStudyNook";
 import Image from "next/image";
 
 export default function Home() {
@@ -8,6 +9,9 @@ export default function Home() {
     <div>
       <Banner/>
      <AllRoomDetails/>
+
+     <HowStudyNookWorks/>
+     <WhyChooseStudyNook/>
 
     </div>
   );

@@ -3,6 +3,7 @@ import { authClient } from '@/lib/auth-client';
 import { Card, Separator } from '@heroui/react';
 import { Button, Description, FieldError, Form, Input, Label, TextField } from "@heroui/react";
 import { redirect } from 'next/navigation';
+import toast from 'react-hot-toast';
 import { FcGoogle } from 'react-icons/fc';
 
 const LoginPage = () => {
@@ -24,7 +25,7 @@ const LoginPage = () => {
 
         if (error) {
             // toast
-            alert("error")
+            toast.error("error")
         }
         // console.log({ data, error });
     }

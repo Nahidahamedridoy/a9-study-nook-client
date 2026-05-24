@@ -18,8 +18,6 @@ const handleCancelBooking = async() =>{
     window.location.reload()
     
 }
-
-
     return (
         <AlertDialog>
 

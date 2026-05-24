@@ -48,7 +48,7 @@ export default function BookingModal({
   const handleBooking = async () => {
 
     if (!selectedDate || !startTime || !endTime) {
-      alert('তারিখ, start time এবং end time সিলেক্ট করুন');
+      toast.error("please select date and time");
       return;
     }
 
@@ -87,12 +87,12 @@ export default function BookingModal({
 
       // ❌ conflict or error
       if (!response.ok || !data.success) {
-        alert(data.message || 'Booking Failed');
+        toast.error(data.message || 'Booking Failed');
         return;
       }
 
       // ✅ success
-      alert("Room booked successfully!");
+      toast.success("Room booked successfully!");
 
       setIsOpen(false);
       setSelectedDate('');
@@ -102,7 +102,7 @@ export default function BookingModal({
 
     } catch (error) {
       console.log(error);
-      alert('Booking Failed');
+      toast.error('Booking Failed');
     }
   };
 

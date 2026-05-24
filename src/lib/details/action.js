@@ -1,8 +1,15 @@
 'use server'
 
+import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
+import { auth } from "@/lib/auth";
 
 export const addDetails = async (data) => {
+
+    const {session} = await auth.api.getSession({
+        headers: await headers(),
+    });
+
     const modifiedData = {
         roomName: data.roomName,
         description: data.description,
@@ -13,19 +20,22 @@ export const addDetails = async (data) => {
         amenities: data.amenities || [],
         email: data.email,
     };
-
+     console.log(session);
     const res = await fetch("http://localhost:5000/details", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${session?.token}`,
         },
+        
         body: JSON.stringify(modifiedData),
+
     });
 
     const result = await res.json();
-
+    console.log({result});
     if (!res.ok) {
-        throw new Error(result.message || "Failed to add rooms");
+         Error(result.message || "Failed to add rooms");
     }
 
     revalidatePath("/rooms");
@@ -33,6 +43,8 @@ export const addDetails = async (data) => {
     return result;
 };
 
+
+// delete
 export const deleteRoom = async (id) => {
     const res = await fetch(`http://localhost:5000/details/${id}`,
         {
@@ -48,6 +60,7 @@ export const deleteRoom = async (id) => {
     return data;
 }
 
+//update
 export const updateDetails = async (id, formData) => {
     console.log(id);
     const updateDetails = Object.fromEntries(formData.entries());
