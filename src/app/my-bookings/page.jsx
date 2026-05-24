@@ -6,16 +6,24 @@ import Image from "next/image";
 const MyBookingPage = async () => {
 
     const session = await auth.api.getSession({
-        headers: await headers() // you need to pass the headers object.
+        headers: await headers()
+    })
+
+    const { token } = await auth.api.getToken({
+        headers: await headers()
     })
 
     const user = session?.user
 
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/booking/${user?.id}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/booking/${user?.id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
 
     const bookings = await res.json()
-    console.log(bookings);
+    // console.log(bookings);
 
     return (
         <div className="max-w-7xl mx-auto">
@@ -46,7 +54,7 @@ const MyBookingPage = async () => {
 
                             <p className="text-3xl font-bold">${booking.hourlyRate}</p>
 
-                        <DeleteBookingRoom bookingId = {booking._id}/>
+                            <DeleteBookingRoom bookingId={booking._id} />
 
                         </div>
 

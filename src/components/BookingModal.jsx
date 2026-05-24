@@ -23,23 +23,21 @@ export default function BookingModal({
 
   const today = new Date().toISOString().split('T')[0];
 
-  // 🕒 generate time slots
   const timeSlots = [
     '08:00', '09:00', '10:00', '11:00',
     '12:00', '13:00', '14:00', '15:00',
     '16:00', '17:00', '18:00', '19:00', '20:00'
   ];
 
-  // ⏱️ convert time to hour number
+ 
   const getHour = (time) => Number(time.split(':')[0]);
 
-  // 💰 calculate cost
   const totalCost =
     startTime && endTime
       ? (getHour(endTime) - getHour(startTime)) * hourlyRate
       : hourlyRate;
 
-  // 🚨 end time filter
+
   const filteredEndTimes =
     startTime
       ? timeSlots.filter(t => getHour(t) > getHour(startTime))
@@ -75,17 +73,21 @@ export default function BookingModal({
         createdAt: new Date(),
       };
 
+      const {data: tokenData} = await authClient.token()
+      console.log(tokenData);
+
       const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/booking`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${tokenData?.token}`,
         },
         body: JSON.stringify(bookingData),
       });
 
       const data = await response.json();
 
-      // ❌ conflict or error
+      
       if (!response.ok || !data.success) {
         toast.error(data.message || 'Booking Failed');
         return;

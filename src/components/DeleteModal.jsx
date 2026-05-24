@@ -6,7 +6,7 @@ import { AlertDialog, Button } from "@heroui/react";
 export function DeleteModal({ detailId }) {
 
   const handleDelete = async () => {
-
+console.log(detailId);
     
     await deleteRoom(detailId);
     // console.log(data);

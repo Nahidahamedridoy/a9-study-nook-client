@@ -20,6 +20,7 @@ const LoginPage = () => {
         })
 
         if (data) {
+            toast.success("login successful")
             redirect('/')
         }
 

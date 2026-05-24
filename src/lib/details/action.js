@@ -47,12 +47,19 @@ export const addDetails = async (data) => {
 
 // delete
 export const deleteRoom = async (id) => {
+    const {token} = await auth.api.getToken({
+        headers : await headers()
+    })
     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/details/${id}`,
         {
-            method: "DELETE"
+            method: "DELETE",
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
         })
 
     const data = await res.json();
+    console.log(data);
 
     if (!res.ok) return;
     console.log(data);

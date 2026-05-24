@@ -1,15 +1,23 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import { AlertDialog, Button } from "@heroui/react";
 import { IoTrashBin } from "react-icons/io5";
 
 export function DeleteBookingRoom({bookingId}) {
 
+   
+
 const handleCancelBooking = async() =>{
+
+     const {data: tokenData} = await authClient.token()
+      console.log(tokenData);
+
     const res = await fetch (`${process.env.NEXT_PUBLIC_SERVER_URL}/booking/${bookingId}` , {
         method:"DELETE",
         headers:{
-            "content-type" : "application/json"
+            "content-type" : "application/json",
+            authorization: `Bearer ${tokenData?.token}`,
         }
     })
     const data = await res.json()
