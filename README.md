@@ -1,7 +1,7 @@
 # 📚 StudyNook – Library Study Room Booking
 
-🌐 Live Website: https://your-live-site-url.com  
-💻 Client Repo: https://github.com/your-username/studynook-client  
+🌐 Live Website: https://a9-study-nook-client.vercel.app 
+💻 Client Repo: 
 
 ---
 

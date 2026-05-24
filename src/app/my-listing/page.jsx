@@ -5,7 +5,7 @@ import React from 'react';
 const MyListing = async() => {
 const roomData = await getAllDetails();
     return (
-        <div>
+        <div className=''>
             <RoomTable roomData={roomData}/>
         </div>
     );

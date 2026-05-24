@@ -9,7 +9,7 @@ const CommonRoom = () => {
 
   const [detailsData, setDetailsData] = useState([]);
 
-  // Initial Data Load
+  
   useEffect(() => {
 
     fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/details`)
@@ -19,15 +19,14 @@ const CommonRoom = () => {
   }, []);
 
   return (
-    <div>
+    <div className="max-w-7xl mx-auto">
 
-      {/* Search + Filter */}
       <SearchBar
         setDetailsData={setDetailsData}
       />
 
-      <h1 className="text-2xl font-bold mb-5">
-        Common Room
+      <h1 className="text-4xl font-bold mb-5 text-center text-cyan-500 underline">
+        All Room
       </h1>
       
 
