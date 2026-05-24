@@ -12,7 +12,7 @@ const CommonRoom = () => {
   // Initial Data Load
   useEffect(() => {
 
-    fetch("http://localhost:5000/details")
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/details`)
       .then((res) => res.json())
       .then((data) => setDetailsData(data));
 

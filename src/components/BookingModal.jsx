@@ -75,7 +75,7 @@ export default function BookingModal({
         createdAt: new Date(),
       };
 
-      const response = await fetch('http://localhost:5000/booking', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/booking`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

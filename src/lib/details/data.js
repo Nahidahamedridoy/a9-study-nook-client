@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import { auth } from "../auth";
 
 export const getAllDetails = async () => {
-  const res = fetch("http://localhost:5000/details");
+  const res = fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/details`);
   const data = (await res).json();
   return data;
 };
@@ -15,7 +15,7 @@ export const getDetailsById = async (id) => {
 
   console.log(token);
 
-  const res = await fetch(`http://localhost:5000/details/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/details/${id}`, {
     headers: {
       authorization: `Bearer ${token}`
     }
@@ -26,7 +26,7 @@ export const getDetailsById = async (id) => {
 
 export const getLatestDetails = async () => {
 
-  const res = await fetch("http://localhost:5000/details?limit=6", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/details?limit=6`, {
     cache: "no-store",
   });
 

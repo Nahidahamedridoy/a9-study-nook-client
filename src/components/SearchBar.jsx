@@ -37,7 +37,7 @@ export default function SearchBar({ setDetailsData }) {
     }
 
     const res = await fetch(
-      `http://localhost:5000/details?${params.toString()}`
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/details?${params.toString()}`
     );
 
     const data = await res.json();

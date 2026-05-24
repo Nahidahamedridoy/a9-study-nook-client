@@ -30,7 +30,7 @@ const Navbar = () => {
   // PRIVATE LINKS
   const privateLinks = [
     { name: "Add Room", path: "/add-room" },
-    { name: "My Listings", path: "/my-listings" },
+    { name: "My Listings", path: "/my-listing" },
     { name: "My Bookings", path: "/my-bookings" },
   ];
 

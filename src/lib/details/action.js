@@ -6,9 +6,10 @@ import { auth } from "@/lib/auth";
 
 export const addDetails = async (data) => {
 
-    const {session} = await auth.api.getSession({
+    const {token} = await auth.api.getToken({
         headers: await headers(),
     });
+    console.log(token);
 
     const modifiedData = {
         roomName: data.roomName,
@@ -20,12 +21,12 @@ export const addDetails = async (data) => {
         amenities: data.amenities || [],
         email: data.email,
     };
-     console.log(session);
-    const res = await fetch("http://localhost:5000/details", {
+    //  console.log(session);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/details`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${session?.token}`,
+            Authorization: `Bearer ${token}`,
         },
         
         body: JSON.stringify(modifiedData),
@@ -46,7 +47,7 @@ export const addDetails = async (data) => {
 
 // delete
 export const deleteRoom = async (id) => {
-    const res = await fetch(`http://localhost:5000/details/${id}`,
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/details/${id}`,
         {
             method: "DELETE"
         })
@@ -74,7 +75,7 @@ export const updateDetails = async (id, formData) => {
         image: updateDetails.image,
     };
 
-    const res = await fetch(`http://localhost:5000/details/${id}`,
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/details/${id}`,
         {
             method: "PATCH",
             headers: {
