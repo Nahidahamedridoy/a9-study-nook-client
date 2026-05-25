@@ -1,7 +1,7 @@
 # 📚 StudyNook – Library Study Room Booking
 
 🌐 Live Website: https://a9-study-nook-client.vercel.app 
-💻 Client Repo: 
+💻 Client Repo: https://github.com/Nahidahamedridoy/a9-study-nook-client
 
 ---
 
