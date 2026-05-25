@@ -27,7 +27,7 @@ const MyBookingPage = async () => {
 
     return (
         <div className="max-w-7xl mx-auto">
-            <h1 className='text-3xl font-bold'>My Booking Page</h1>
+            <h1 className='text-3xl font-bold mt-5 mb-5'>My Booking Page</h1>
 
             <div className="space-y-5">
                 {

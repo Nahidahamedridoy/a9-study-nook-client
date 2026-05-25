@@ -5,7 +5,6 @@ const RoomPage = async () => {
     
     return (
         <div>
-            Room Page
             <CommonRoom />
         </div>
     );
